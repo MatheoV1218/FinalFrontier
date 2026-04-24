@@ -1,0 +1,83 @@
+.login-page {
+  width: min(520px, 92%);
+  margin: 0 auto;
+  padding: 50px 0;
+}
+
+.login-card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  padding: 34px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
+}
+
+.login-card h1 {
+  font-size: 2.4rem;
+  margin: 0;
+}
+
+.login-subtitle {
+  color: #cbd5e1;
+  margin-bottom: 28px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-form label {
+  color: #dbeafe;
+  font-weight: 700;
+}
+
+.login-form input,
+.verification-box input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  background: rgba(2, 6, 23, 0.65);
+  color: white;
+  outline: none;
+}
+
+.login-form input:focus,
+.verification-box input:focus {
+  border-color: #7dd3fc;
+}
+
+.login-form button,
+.verification-box button {
+  margin-top: 12px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.verification-box {
+  margin-top: 28px;
+  padding: 22px;
+  border-radius: 22px;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.verification-box h2 {
+  margin-top: 0;
+  color: #bfdbfe;
+}
+
+.verification-box p {
+  color: #cbd5e1;
+}
+
+.secondary-button {
+  width: 100%;
+}
