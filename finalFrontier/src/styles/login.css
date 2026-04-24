@@ -81,3 +81,25 @@
 .secondary-button {
   width: 100%;
 }
+.auth-toggle {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.auth-toggle p {
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #7dd3fc;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}

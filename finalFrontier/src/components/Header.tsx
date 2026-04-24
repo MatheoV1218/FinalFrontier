@@ -10,9 +10,8 @@ function Header() {
 
       <nav className="nav">
         <Link to="/">Characters</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup" className="login-link">
-          Sign Up
+        <Link to="/login" className="login-link">
+          Login / Sign Up
         </Link>
       </nav>
     </header>

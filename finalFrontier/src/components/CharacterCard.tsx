@@ -8,7 +8,7 @@ type Props = {
 function CharacterCard({ character }: Props) {
   return (
     <Link to={`/character/${character.id}`} className="character-card">
-      <div className="card-glow"></div>
+      <img src={character.image} alt={character.name} />
 
       <h2>{character.name}</h2>
       <p className="character-title">{character.title}</p>
