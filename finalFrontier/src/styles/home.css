@@ -98,3 +98,47 @@
 .character-card:hover img {
   transform: scale(1.05);
 }
+/*
+.character-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  object-position: center 20px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  object-fit: contain; 
+}*/
+.character-img-2  {
+  object-position: center 10px;
+}
+.character-img-3  {
+  object-position: center 10px;
+}
+.character-img-4  {
+  object-position: center 10px;
+}
+.character-img-6  {
+  object-position: center 10px;
+}
+.character-img-7  {
+  object-position: center 10px;
+  object-position: -80px center;
+}
+.character-img-8  {
+  object-position: center 10px;
+}
+.character-img-11  {
+  object-position: center 0px;
+}
+.character-img-12  {
+  object-position: center 10px;
+}
+.character-img-13  {
+  object-position: center 15px;
+}
+.character-img-14  {
+  object-position: center 0px;
+}
+.character-img-15  {
+  object-position: center 20px;
+}

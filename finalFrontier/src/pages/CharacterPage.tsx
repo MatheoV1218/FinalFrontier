@@ -45,7 +45,7 @@ function CharacterPage() {
         style={{
           backgroundImage: `url(${character.image})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: character.imagePosition || "center",
         }}
       >
         <div className="hero-overlay">
