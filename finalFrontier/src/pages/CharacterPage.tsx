@@ -17,22 +17,54 @@ function CharacterPage() {
   if (!character) {
     return <h1>Character not found</h1>;
   }
-
   const handleAdd = () => {
     if (!comboInput.trim()) {
       alert("Enter a combo first");
       return;
     }
-
-    setCombos([
-      ...combos,
-      { username: "You", combo: comboInput },
-    ]);
-
+    setCombos([...combos, { username: "You", combo: comboInput }]);
     setComboInput("");
     setShowForm(false);
   };
+  const formatCombo = (combo: string) => {
+  const parts = combo.match(/[0-9]+[PKSHD]+|[PKSHD]+|xN|or|>|\/|\S+/gi) || [];
 
+  return parts.map((part, index) => {
+    if (/^[0-9]+[PKSHD]+$/i.test(part)) {
+      const numbers = part.match(/^[0-9]+/)?.[0] || "";
+      const buttons = part.match(/[PKSHD]+$/i)?.[0] || "";
+
+      return (
+        <span key={index}>
+          <span className="combo-text-default">{numbers}</span>
+          <span className="button-input">{buttons}</span>
+        </span>
+      );
+    }
+
+    if (/^[1-9][PKSHD]$/i.test(part)) {
+      return <span key={index} className="move-input">{part}</span>;
+    }
+
+    if (/^[PKSHD]+$/i.test(part)) {
+      return <span key={index} className="button-input">{part}</span>;
+    }
+
+    if (part === ">" || part === "/") {
+      return <span key={index} className="combo-symbol">{part}</span>;
+    }
+
+    if (part.toLowerCase() === "or") {
+      return <span key={index} className="combo-or">{part}</span>;
+    }
+
+    if (part === "xN") {
+      return <span key={index} className="combo-repeat">{part}</span>;
+    }
+
+    return <span key={index} className="combo-text-default">{part}</span>;
+  });
+};
   return (
     <section className="character-page">
       <Link to="/" className="back-link">
@@ -85,7 +117,7 @@ function CharacterPage() {
             <textarea
               placeholder="Enter your combo..."
               value={comboInput}
-              maxLength={120}   // ✅ LIMIT
+              maxLength={120}   
               onChange={(e) => setComboInput(e.target.value)}
             />
 
@@ -105,7 +137,7 @@ function CharacterPage() {
         {combos.map((entry, index) => (
           <div key={index} className="combo-card">
             <p className="combo-user">{entry.username}</p>
-            <p className="combo-text">{entry.combo}</p>
+            <p className="combo-text">{formatCombo(entry.combo)}</p>
           </div>
         ))}
       </div>

@@ -215,3 +215,53 @@
     transform: translateY(0);
   }
 }
+/*Colors for combo text*/
+.combo-text {
+  font-size: 1.4rem;
+  font-weight: 900;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Inputs like 5P, 6P */
+.move-input {
+  color: #f472b6;
+}
+
+/* Single buttons */
+.button-input {
+  color: #38bdf8;
+}
+
+/* > and / */
+.combo-symbol {
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+/* "or" */
+.combo-or {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* xN */
+.combo-repeat {
+  color: #facc15;
+}
+
+/* fallback */
+.combo-text-default {
+  color: #e2e8f0;
+}
+.combo-text {
+  gap: 4px;
+}
+
+.combo-symbol {
+  color: #ffffff;
+  opacity: 0.9;
+  margin: 0 -2px;
+}
