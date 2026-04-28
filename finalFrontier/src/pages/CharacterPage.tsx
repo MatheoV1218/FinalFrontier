@@ -1,9 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { characters } from "../data/characters";
+import type { User } from "@supabase/supabase-js";
 import "../styles/characterPage.css";
 
-function CharacterPage() {
+function CharacterPage({ user }: { user: User | null }) {
   const { id } = useParams();
 
   const character = characters.find((char) => char.id === Number(id));
@@ -17,54 +18,67 @@ function CharacterPage() {
   if (!character) {
     return <h1>Character not found</h1>;
   }
+
   const handleAdd = () => {
     if (!comboInput.trim()) {
       alert("Enter a combo first");
       return;
     }
-    setCombos([...combos, { username: "You", combo: comboInput }]);
+
+    setCombos([
+      ...combos,
+      {
+        username: user?.user_metadata?.username || "Unknown",
+        combo: comboInput,
+      },
+    ]);
+
     setComboInput("");
     setShowForm(false);
   };
+
+  // 🔥 teammate's formatter (unchanged)
   const formatCombo = (combo: string) => {
-  const parts = combo.match(/[0-9]+[PKSHD]+|[PKSHD]+|xN|or|>|\/|\S+/gi) || [];
+    const parts =
+      combo.match(/[0-9]+[PKSHD]+|[PKSHD]+|xN|or|>|\/|\S+/gi) || [];
 
-  return parts.map((part, index) => {
-    if (/^[0-9]+[PKSHD]+$/i.test(part)) {
-      const numbers = part.match(/^[0-9]+/)?.[0] || "";
-      const buttons = part.match(/[PKSHD]+$/i)?.[0] || "";
+    return parts.map((part, index) => {
+      if (/^[0-9]+[PKSHD]+$/i.test(part)) {
+        const numbers = part.match(/^[0-9]+/)?.[0] || "";
+        const buttons = part.match(/[PKSHD]+$/i)?.[0] || "";
 
-      return (
-        <span key={index}>
-          <span className="combo-text-default">{numbers}</span>
-          <span className="button-input">{buttons}</span>
-        </span>
-      );
-    }
+        return (
+          <span key={index}>
+            <span className="combo-text-default">{numbers}</span>
+            <span className="button-input">{buttons}</span>
+          </span>
+        );
+      }
 
-    if (/^[1-9][PKSHD]$/i.test(part)) {
-      return <span key={index} className="move-input">{part}</span>;
-    }
+      if (/^[1-9][PKSHD]$/i.test(part)) {
+        return <span key={index} className="move-input">{part}</span>;
+      }
 
-    if (/^[PKSHD]+$/i.test(part)) {
-      return <span key={index} className="button-input">{part}</span>;
-    }
+      if (/^[PKSHD]+$/i.test(part)) {
+        return <span key={index} className="button-input">{part}</span>;
+      }
 
-    if (part === ">" || part === "/") {
-      return <span key={index} className="combo-symbol">{part}</span>;
-    }
+      if (part === ">" || part === "/") {
+        return <span key={index} className="combo-symbol">{part}</span>;
+      }
 
-    if (part.toLowerCase() === "or") {
-      return <span key={index} className="combo-or">{part}</span>;
-    }
+      if (part.toLowerCase() === "or") {
+        return <span key={index} className="combo-or">{part}</span>;
+      }
 
-    if (part === "xN") {
-      return <span key={index} className="combo-repeat">{part}</span>;
-    }
+      if (part === "xN") {
+        return <span key={index} className="combo-repeat">{part}</span>;
+      }
 
-    return <span key={index} className="combo-text-default">{part}</span>;
-  });
-};
+      return <span key={index} className="combo-text-default">{part}</span>;
+    });
+  };
+
   return (
     <section className="character-page">
       <Link to="/" className="back-link">
@@ -103,28 +117,34 @@ function CharacterPage() {
         </div>
       </div>
 
-      {/* ADD COMBO */}
-      <div className="add-combo-section">
-        <button
-          className="add-combo-btn"
-          onClick={() => setShowForm(!showForm)}
-        >
-          + Add Combo
-        </button>
+      {/* 🔐 ADD COMBO (AUTH PROTECTED) */}
+      {user ? (
+        <div className="add-combo-section">
+          <button
+            className="add-combo-btn"
+            onClick={() => setShowForm(!showForm)}
+          >
+            + Add Combo
+          </button>
 
-        {showForm && (
-          <div className="add-combo-form">
-            <textarea
-              placeholder="Enter your combo..."
-              value={comboInput}
-              maxLength={120}   
-              onChange={(e) => setComboInput(e.target.value)}
-            />
+          {showForm && (
+            <div className="add-combo-form">
+              <textarea
+                placeholder="Enter your combo..."
+                value={comboInput}
+                maxLength={120}
+                onChange={(e) => setComboInput(e.target.value)}
+              />
 
-            <button onClick={handleAdd}>Submit Combo</button>
-          </div>
-        )}
-      </div>
+              <button onClick={handleAdd}>Submit Combo</button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p style={{ marginTop: "20px", color: "#93c5fd" }}>
+          Login to add your own combos
+        </p>
+      )}
 
       {/* COMMUNITY COMBOS */}
       <div className="community-section">

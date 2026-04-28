@@ -54,3 +54,19 @@
     font-size: 1.2rem;
   }
 }
+.user-name {
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #f87171;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  text-decoration: underline;
+}
