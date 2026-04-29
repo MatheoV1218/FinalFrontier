@@ -70,3 +70,7 @@
 .logout-btn:hover {
   text-decoration: underline;
 }
+.account-link {
+  color: #7dd3fc;
+  font-weight: 700;
+}

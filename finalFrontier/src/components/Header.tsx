@@ -27,6 +27,10 @@ function Header({ user }: { user: User | null }) {
               {user.user_metadata?.username || user.email}
             </span>
 
+            <Link to="/account" className="account-link">
+              Account
+            </Link>
+
             <button className="logout-btn" onClick={handleLogout}>
               Logout
             </button>

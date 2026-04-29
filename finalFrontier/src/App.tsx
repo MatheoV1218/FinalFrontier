@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import CharacterPage from "./pages/CharacterPage";
 import Login from "./pages/Login";
+import Account from "./pages/Account";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -41,6 +42,7 @@ function App() {
             element={<CharacterPage user={user} />}
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account user={user} />} />
         </Routes>
       </main>
     </>
