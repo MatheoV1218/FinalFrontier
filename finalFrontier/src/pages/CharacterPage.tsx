@@ -36,48 +36,62 @@ function CharacterPage({ user }: { user: User | null }) {
     setComboInput("");
     setShowForm(false);
   };
+const formatCombo = (combo: string) => {
+  // split into: normal text + (parentheses blocks)
+  const segments = combo.split(/(\([^)]*\))/g);
 
-  // 🔥 teammate's formatter (unchanged)
-  const formatCombo = (combo: string) => {
+  return segments.map((segment, segIndex) => {
+    // if it's a move name like (Dandy Punch)
+    if (segment.startsWith("(") && segment.endsWith(")")) {
+      return (
+        <span key={segIndex} className="combo-text-default">
+          {segment}
+        </span>
+      );
+    }
+
+    // otherwise parse normally
     const parts =
-      combo.match(/[0-9]+[PKSHD]+|[PKSHD]+|xN|or|>|\/|\S+/gi) || [];
+      segment.match(/j\.\([PKSHD](?:\s*or\s*[PKSHD])*\)|j\.[0-9]+[PKSHD]|j\.[PKSHD]|c\.S|f\.S|[0-9]+[PKSHD]|[PKSHD]|RC|xN|or|>|\/|\S+/gi) || [];
+
+    const getMoveClass = (part: string) => {
+      const move = part.toUpperCase();
+
+      if (move.startsWith("J.(")) return "move-slash";
+      if (move.endsWith("P")) return "move-punch";
+      if (move.endsWith("K")) return "move-kick";
+      if (move.endsWith("S")) return "move-slash";
+      if (move.endsWith("H")) return "move-heavy";
+      if (move.endsWith("D")) return "move-dust";
+
+      return "combo-text-default";
+    };
 
     return parts.map((part, index) => {
-      if (/^[0-9]+[PKSHD]+$/i.test(part)) {
-        const numbers = part.match(/^[0-9]+/)?.[0] || "";
-        const buttons = part.match(/[PKSHD]+$/i)?.[0] || "";
-
+      if (/^(j\.\([PKSHD](?:\s*or\s*[PKSHD])*\)|j\.[0-9]+[PKSHD]|j\.[PKSHD]|c\.S|f\.S|[0-9]+[PKSHD]|[PKSHD])$/i.test(part)) {
         return (
-          <span key={index}>
-            <span className="combo-text-default">{numbers}</span>
-            <span className="button-input">{buttons}</span>
+          <span key={`${segIndex}-${index}`} className={getMoveClass(part)}>
+            {part}
           </span>
         );
       }
 
-      if (/^[1-9][PKSHD]$/i.test(part)) {
-        return <span key={index} className="move-input">{part}</span>;
-      }
-
-      if (/^[PKSHD]+$/i.test(part)) {
-        return <span key={index} className="button-input">{part}</span>;
-      }
-
       if (part === ">" || part === "/") {
-        return <span key={index} className="combo-symbol">{part}</span>;
+        return (
+          <span key={`${segIndex}-${index}`} className="combo-symbol">
+            {part}
+          </span>
+        );
       }
 
-      if (part.toLowerCase() === "or") {
-        return <span key={index} className="combo-or">{part}</span>;
-      }
-
-      if (part === "xN") {
-        return <span key={index} className="combo-repeat">{part}</span>;
-      }
-
-      return <span key={index} className="combo-text-default">{part}</span>;
+      return (
+        <span key={`${segIndex}-${index}`} className="combo-text-default">
+          {part}
+        </span>
+      );
     });
-  };
+  });
+};
 
   return (
     <section className="character-page">

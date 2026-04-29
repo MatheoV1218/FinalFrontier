@@ -29,7 +29,7 @@ export const characters: Character[] = [
     difficulty: "Medium",
     image: "/Tokai.png",
     communityCombos: [
-      { username: "Player1", combo: "Light > Heavy > Gravity Slam" },
+      { username: "Player1", combo: "6S > 2H > 3K > RC > c.S > 6321456S (Super Mappa Hunch)" },
     ],
   },
   {
@@ -43,7 +43,7 @@ export const characters: Character[] = [
     difficulty: "Easy",
     image: "/kinger_vape.png",
     communityCombos: [
-      { username: "FireMain", combo: "Light > Medium > Flame Burst" },
+      { username: "FireMain", combo: "c.S > f.S > 5H > 214K(Foudre Cloud) > RC > c.S > 2S > 5H > 236H(Bluring Smoke) > 214P (Cloud Smoke)" },
     ],
     imagePosition: "center 35%"
 
@@ -59,7 +59,7 @@ export const characters: Character[] = [
     difficulty: "Hard",
     image: "/giga.png",
     communityCombos: [
-      { username: "ShadowGod", combo: "Teleport > Light > Heavy" },
+      { username: "ShadowGod", combo: "632146P(Plant Buster) > RRC ~ 5D > 2S > 2H > 623K(IMP tackle)" },
     ],
     imagePosition: "center 20%"
   },
@@ -69,12 +69,12 @@ export const characters: Character[] = [
     title: "Heavenly Swordman",
     createdBy: "Chris",
     creatorRole: "Designer",
-    description: "Controls ice to slow and trap opponents.",
+    description: "frame traps to trick opponents",
     fightingStyle: "Rushdown",
     difficulty: "Medium",
     image: "/unnamed.png",
     communityCombos: [
-      { username: "Frosty", combo: "Ice Shot > Freeze > Slam" },
+      { username: "Frosty", combo: "2369S(Hiiragi) > j.H > j.236S > 5K j.D > 66 > j.S > j.D"},
     ],
     imagePosition: "center 10%"
   },
@@ -89,7 +89,7 @@ export const characters: Character[] = [
     difficulty: "Easy",
     image: "/v1.png",
     communityCombos: [
-      { username: "TankMain", combo: "Heavy > Grab > Slam" },
+      { username: "TankMain", combo: "c.S > 2H > 214H(Michael Sword) > 236H(Chestnut) > 66 > 6H > 214S(Fish) > 6H" },
     ],
     imagePosition: "center 40%"
   },
@@ -104,7 +104,7 @@ export const characters: Character[] = [
     difficulty: "Hard",
     image: "/sledge.png",
     communityCombos: [
-      { username: "NightFox", combo: "Dash > Light > Critical Strike" },
+      { username: "NightFox", combo: "5K > 214H > 623H > 236K > c.S > f.SSS > 6H" },
     ],
     imagePosition: "center 10%"
   },
@@ -119,7 +119,7 @@ export const characters: Character[] = [
     difficulty: "Medium",
     image: "/mime.png",
     communityCombos: [
-      { username: "Zap", combo: "Light spam > Shock finisher" },
+      { username: "Zap", combo: "236H(That's a Lot) > 214S(Drunkard Shade) > 214K(Break the Law) > c.S > 2S > 2H > 2H > 214K(Break the Law)" },
     ],
     imagePosition: "center 70%"
   },
@@ -134,7 +134,7 @@ export const characters: Character[] = [
     difficulty: "Easy",
     image: "/justin_b.png",
     communityCombos: [
-      { username: "Healer", combo: "Trap > Root > Burst" },
+      { username: "Healer", combo: "f.S > 2H > 214H(Dr Pepper) > j.H > c.S > 2H > 214S(Dr Pepper)" },
     ],
     imagePosition: "center 20%"
   },
@@ -149,7 +149,7 @@ export const characters: Character[] = [
     difficulty: "Medium",
     image: "/tiktok.png",
     communityCombos: [
-      { username: "StarBoy", combo: "Light > Cosmic Slash" },
+      { username: "StarBoy", combo: "(Any Button) > 684H(Behemoth Typhoon)" },
     ],
     imagePosition: "center 10%"
   },
@@ -164,7 +164,7 @@ export const characters: Character[] = [
     difficulty: "Hard",
     image: "/arafrat.png",
     communityCombos: [
-      { username: "WolfMain", combo: "Claw > Bite > Roar" },
+      { username: "WolfMain", combo: "46H (spam till you win)" },
     ],
     imagePosition: "center 10%"
   },
@@ -179,7 +179,7 @@ export const characters: Character[] = [
     difficulty: "Easy",
     image: "/teto.png",
     communityCombos: [
-      { username: "NovaMain", combo: "Charge > Blast > Finisher" },
+      { username: "NovaMain", combo: "6K > 8H > j.P > j.S > c.S > 5H > 2S > 214H(Eisenstrurm)" },
     ],
     imagePosition: "center 35%"
   },
@@ -194,7 +194,7 @@ export const characters: Character[] = [
     difficulty: "Hard",
     image: "/demon-king.png",
     communityCombos: [
-      { username: "TimeLord", combo: "Rewind > Light > Heavy" },
+      { username: "TimeLord", combo: "5P > 6P > 236S(Score Score Score)" },
     ],
     imagePosition: "center 20%"
   },
@@ -209,7 +209,7 @@ export const characters: Character[] = [
     difficulty: "Easy",
     image: "/Kashtira_Arise-Heart.png",
     communityCombos: [
-      { username: "SniperX", combo: "Aim > Charge > Beam" },
+      { username: "SniperX", combo: "5K > 6P > 632P(Sword Toss) > 2K > 6H > 214H(Banish)" },
     ],
     imagePosition: "center 10%"
   },
@@ -224,7 +224,7 @@ export const characters: Character[] = [
     difficulty: "Medium",
     image: "/sugar.png",
     communityCombos: [
-      { username: "VoidMain", combo: "Drain > Heavy > Collapse" },
+      { username: "VoidMain", combo: "2P > H > 66 > c.S > 2D > 632146S(Deus Ex Machina)" },
     ],
   },
   {
@@ -238,7 +238,7 @@ export const characters: Character[] = [
     difficulty: "Easy",
     image: "/zek.png",
     communityCombos: [
-      { username: "Toxic", combo: "Poison > Light > Spread" },
+      { username: "Toxic", combo: "2P > 6P > 236K(ThunderBolt) > 214214H(Rising Voltage)" },
     ],
     imagePosition: "center 20%"
   },
