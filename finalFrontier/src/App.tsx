@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import CharacterPage from "./pages/CharacterPage";
 import Login from "./pages/Login";
 import Account from "./pages/Account";
+import ResetPassword from "./pages/reset-password";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -37,6 +38,7 @@ function App() {
       <main className="app-main">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/character/:id"
             element={<CharacterPage user={user} />}

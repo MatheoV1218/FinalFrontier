@@ -7,7 +7,6 @@ function Login() {
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState(true);
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +17,23 @@ function Login() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+    const handleForgotPassword = async () => {
+    setMessage("");
+    if (!email) {
+      setMessage("Enter your email first.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) {
+       setMessage(error.message);
+    }else {
+      setMessage("Password reset email sent. Check your inbox.");
+    }
+    setLoading(false);
+  };
 
   const handleAuth = async () => {
     setMessage("");
@@ -122,6 +138,7 @@ function Login() {
   };
 
   return (
+    /*Forgot Password*/
     <section className="login-page">
       <div className="login-card">
         <p className="eyebrow">FinalFrontier</p>
@@ -178,6 +195,14 @@ function Login() {
                 : isLogin
                 ? "Login"
                 : "Create Account"}
+            </button>
+            <button
+              type="button"
+              className="forgot-btn"
+              onClick={handleForgotPassword}
+              disabled={loading}
+            >
+            Forgot password?
             </button>
           </form>
         )}
