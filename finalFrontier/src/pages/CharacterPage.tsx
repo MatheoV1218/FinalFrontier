@@ -18,24 +18,32 @@ function CharacterPage({ user }: { user: User | null }) {
   if (!character) {
     return <h1>Character not found</h1>;
   }
+    const handleAdd = () => {
+      const cleanCombo = comboInput
+        .replace(/[<>]/g, "")
+        .trim();
 
-  const handleAdd = () => {
-    if (!comboInput.trim()) {
-      alert("Enter a combo first");
-      return;
-    }
+      if (!cleanCombo) {
+        alert("Enter a combo first");
+        return;
+      }
 
-    setCombos([
-      ...combos,
-      {
-        username: user?.user_metadata?.username || "Unknown",
-        combo: comboInput,
-      },
-    ]);
+      if (cleanCombo.length > 120) {
+        alert("Combo is too long");
+        return;
+      }
 
+      setCombos([
+        ...combos,
+        {
+          username: user?.user_metadata?.username || "Unknown",
+          combo: cleanCombo,
+        },
+      ]);
     setComboInput("");
     setShowForm(false);
   };
+// For adding the color on the text
 const formatCombo = (combo: string) => {
   // split into: normal text + (parentheses blocks)
   const segments = combo.split(/(\([^)]*\))/g);
