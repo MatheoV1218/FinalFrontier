@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import type { ReactElement } from "react";
 
-function ProtectedRoute({ children }: { children: JSX.Element }) {
+function ProtectedRoute({ children }: { children: ReactElement }) {
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [redirect, setRedirect] = useState("/login");
 
