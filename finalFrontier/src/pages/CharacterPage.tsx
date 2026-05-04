@@ -47,7 +47,7 @@ function CharacterPage({ user }: { user: User | null }) {
     return <h1>Character not found</h1>;
   }
   const handleAdd = async () => {
-    const cleanCombo = comboInput.replace(/[<>]/g, "").trim();
+    const cleanCombo = comboInput.replace(/[<]/g, "").trim();
 
     if (!cleanCombo) {
       alert("Enter a combo first");
@@ -103,9 +103,86 @@ function CharacterPage({ user }: { user: User | null }) {
     // update UI
     setCombos(combos.filter((c) => c.id !== comboId));
   };
+  const formatCombo = (combo: string) => {
+    const segments = combo.split(/(\([^)]*\))/g);
 
+    return segments.map((segment, segIndex) => {
+      if (segment.startsWith("(") && segment.endsWith(")")) {
+        return (
+          <span key={segIndex} className="combo-text-default">
+            {segment}
+          </span>
+        );
+      }
+
+      const parts =
+      segment.match(
+        /j\.\([PKSHD](?:\s*or\s*[PKSHD])*\)|j\.[0-9]+[PKSHD]|j\.[PKSHD]|c\.S|f\.S|[0-9]+[PKSHD]|[PKSHD]|RC|xN|or|>|\/|\s+|\S+/gi
+      ) || [];
+
+      const getMoveClass = (part: string) => {
+        const move = part.toUpperCase();
+
+        if (move.endsWith("P")) return "move-punch";
+        if (move.endsWith("K")) return "move-kick";
+        if (move.endsWith("S")) return "move-slash";
+        if (move.endsWith("H")) return "move-heavy";
+        if (move.endsWith("D")) return "move-dust";
+
+        return "combo-text-default";
+      };
+
+      return parts.map((part, index) => {
+        if (part.trim() === "") {
+          return <span key={`${segIndex}-${index}`}> </span>;
+        }
+
+        if (part === ">" || part === "/") {
+          return (
+            <span key={`${segIndex}-${index}`} className="combo-symbol">
+              {part}
+            </span>
+          );
+        }
+
+        if (
+          /^(j\.\([PKSHD](?:\s*or\s*[PKSHD])*\)|j\.[0-9]+[PKSHD]|j\.[PKSHD]|c\.S|f\.S|[0-9]+[PKSHD]|[PKSHD])$/i.test(part)
+        ) {
+          return (
+            <span key={`${segIndex}-${index}`} className={getMoveClass(part)}>
+              {part}
+            </span>
+          );
+        }
+
+        return (
+          <span key={`${segIndex}-${index}`} className="combo-text-default">
+            {part}
+          </span>
+        );
+      });
+    });
+  };
+   const renderComboText = (combo: string) => {
+    const lines = combo.split("\n");
+
+    const isCombo = /[0-9][PKSHD]|[PKSHD]\.|>/.test(lines[0]);
+
+    return (
+      <p className="combo-text">
+        {isCombo ? formatCombo(lines[0]) : lines[0]}
+
+        {lines.slice(1).map((line, i) => (
+          <span key={i} className="combo-description">
+            <br />
+            {line}
+          </span>
+        ))}
+      </p>
+    );
+  };
   const handleEdit = async (comboId: string) => {
-    const cleanCombo = editText.replace(/[<>]/g, "").trim();
+    const cleanCombo = editText.replace(/[<]/g, "").trim();
 
     if (!cleanCombo) {
       alert("Enter a combo");
@@ -244,7 +321,7 @@ function CharacterPage({ user }: { user: User | null }) {
               </>
             ) : (
               <>
-                <p className="combo-text">{entry.combo}</p>
+                {renderComboText(entry.combo)}
 
                 {/* 🔐 ONLY SHOW IF OWNER */}
                 {user?.id === entry.user_id && (

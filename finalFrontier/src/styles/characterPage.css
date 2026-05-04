@@ -353,3 +353,12 @@
   letter-spacing: 0.5px;
   font-family: monospace;
 }
+.combo-symbol {
+  margin: 0 2px;
+  font-weight: 800;
+  color: white;
+}
+
+.combo-text span {
+  margin-right: 1px;
+}
