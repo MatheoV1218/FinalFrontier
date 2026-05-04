@@ -1,105 +1,136 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { characters } from "../data/characters";
 import type { User } from "@supabase/supabase-js";
+import { supabase } from "../lib/supabase";
 import "../styles/characterPage.css";
 
 function CharacterPage({ user }: { user: User | null }) {
   const { id } = useParams();
 
   const character = characters.find((char) => char.id === Number(id));
+  type Combo = {
+    id: string;
+    username: string;
+    combo: string;
+    user_id: string;
+    character_id: number;
+  };
 
-  const [combos, setCombos] = useState(
-    character ? character.communityCombos : []
-  );
+  const [combos, setCombos] = useState<Combo[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [comboInput, setComboInput] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState("");
+
+  useEffect(() => {
+    const fetchCombos = async () => {
+      if (!character) return;
+
+      const { data, error } = await supabase
+        .from("combos")
+        .select("*")
+        .eq("character_id", character.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching combos:", error.message);
+      } else {
+        setCombos(data);
+      }
+    };
+
+    fetchCombos();
+  }, [character]);
 
   if (!character) {
     return <h1>Character not found</h1>;
   }
-    const handleAdd = () => {
-      const cleanCombo = comboInput
-        .replace(/[<>]/g, "")
-        .trim();
+  const handleAdd = async () => {
+    const cleanCombo = comboInput.replace(/[<>]/g, "").trim();
 
-      if (!cleanCombo) {
-        alert("Enter a combo first");
-        return;
-      }
+    if (!cleanCombo) {
+      alert("Enter a combo first");
+      return;
+    }
 
-      if (cleanCombo.length > 120) {
-        alert("Combo is too long");
-        return;
-      }
+    if (cleanCombo.length > 120) {
+      alert("Combo is too long");
+      return;
+    }
 
-      setCombos([
-        ...combos,
+    if (!user) {
+      alert("You must be logged in");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("combos")
+      .insert([
         {
-          username: user?.user_metadata?.username || "Unknown",
+          user_id: user.id,
+          username: user.user_metadata?.username || "Unknown",
+          character_id: character.id,
           combo: cleanCombo,
         },
-      ]);
+      ])
+      .select();
+
+    if (error) {
+      console.error("Insert error:", error.message);
+      alert("Failed to add combo");
+      return;
+    }
+
+    // ✅ instantly update UI
+    setCombos([data[0], ...combos]);
+
     setComboInput("");
     setShowForm(false);
   };
-// For adding the color on the text
-const formatCombo = (combo: string) => {
-  // split into: normal text + (parentheses blocks)
-  const segments = combo.split(/(\([^)]*\))/g);
+  // For adding the color on the text
+ 
 
-  return segments.map((segment, segIndex) => {
-    // if it's a move name like (Dandy Punch)
-    if (segment.startsWith("(") && segment.endsWith(")")) {
-      return (
-        <span key={segIndex} className="combo-text-default">
-          {segment}
-        </span>
-      );
+  const handleDelete = async (comboId: string) => {
+    const { error } = await supabase.from("combos").delete().eq("id", comboId);
+
+    if (error) {
+      console.error("Delete error:", error.message);
+      alert("Failed to delete combo");
+      return;
     }
 
-    // otherwise parse normally
-    const parts =
-      segment.match(/j\.\([PKSHD](?:\s*or\s*[PKSHD])*\)|j\.[0-9]+[PKSHD]|j\.[PKSHD]|c\.S|f\.S|[0-9]+[PKSHD]|[PKSHD]|RC|xN|or|>|\/|\S+/gi) || [];
+    // update UI
+    setCombos(combos.filter((c) => c.id !== comboId));
+  };
 
-    const getMoveClass = (part: string) => {
-      const move = part.toUpperCase();
+  const handleEdit = async (comboId: string) => {
+    const cleanCombo = editText.replace(/[<>]/g, "").trim();
 
-      if (move.startsWith("J.(")) return "move-slash";
-      if (move.endsWith("P")) return "move-punch";
-      if (move.endsWith("K")) return "move-kick";
-      if (move.endsWith("S")) return "move-slash";
-      if (move.endsWith("H")) return "move-heavy";
-      if (move.endsWith("D")) return "move-dust";
+    if (!cleanCombo) {
+      alert("Enter a combo");
+      return;
+    }
 
-      return "combo-text-default";
-    };
+    const { error } = await supabase
+      .from("combos")
+      .update({ combo: cleanCombo })
+      .eq("id", comboId);
 
-    return parts.map((part, index) => {
-      if (/^(j\.\([PKSHD](?:\s*or\s*[PKSHD])*\)|j\.[0-9]+[PKSHD]|j\.[PKSHD]|c\.S|f\.S|[0-9]+[PKSHD]|[PKSHD])$/i.test(part)) {
-        return (
-          <span key={`${segIndex}-${index}`} className={getMoveClass(part)}>
-            {part}
-          </span>
-        );
-      }
+    if (error) {
+      console.error("Update error:", error.message);
+      alert("Failed to update combo");
+      return;
+    }
 
-      if (part === ">" || part === "/") {
-        return (
-          <span key={`${segIndex}-${index}`} className="combo-symbol">
-            {part}
-          </span>
-        );
-      }
+    // update UI
+    setCombos(
+      combos.map((c) => (c.id === comboId ? { ...c, combo: cleanCombo } : c)),
+    );
 
-      return (
-        <span key={`${segIndex}-${index}`} className="combo-text-default">
-          {part}
-        </span>
-      );
-    });
-  });
-};
+    setEditingId(null);
+    setEditText("");
+  };
 
   return (
     <section className="character-page">
@@ -127,15 +158,23 @@ const formatCombo = (combo: string) => {
       <div className="info-layout">
         <div className="info-box">
           <h2>Creator Info</h2>
-          <p><strong>Created By:</strong> {character.createdBy}</p>
-          <p><strong>Role:</strong> {character.creatorRole}</p>
+          <p>
+            <strong>Created By:</strong> {character.createdBy}
+          </p>
+          <p>
+            <strong>Role:</strong> {character.creatorRole}
+          </p>
         </div>
 
         <div className="info-box">
           <h2>Character Info</h2>
           <p>{character.description}</p>
-          <p><strong>Style:</strong> {character.fightingStyle}</p>
-          <p><strong>Difficulty:</strong> {character.difficulty}</p>
+          <p>
+            <strong>Style:</strong> {character.fightingStyle}
+          </p>
+          <p>
+            <strong>Difficulty:</strong> {character.difficulty}
+          </p>
         </div>
       </div>
 
@@ -172,14 +211,64 @@ const formatCombo = (combo: string) => {
       <div className="community-section">
         <h2>Community Combos</h2>
 
-        {combos.length === 0 && (
-          <p>No combos yet — be the first!</p>
-        )}
+        {combos.length === 0 && <p>No combos yet — be the first!</p>}
 
-        {combos.map((entry, index) => (
-          <div key={index} className="combo-card">
+        {combos.map((entry) => (
+          <div key={entry.id} className="combo-card">
             <p className="combo-user">{entry.username}</p>
-            <p className="combo-text">{formatCombo(entry.combo)}</p>
+
+            {/* ✏️ EDIT MODE */}
+            {editingId === entry.id ? (
+              <>
+                <textarea
+                  className="combo-edit-textarea"
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                />
+
+                <div className="combo-actions">
+                  <button
+                    className="combo-btn-save"
+                    onClick={() => handleEdit(entry.id)}
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    className="combo-btn-cancel"
+                    onClick={() => setEditingId(null)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="combo-text">{entry.combo}</p>
+
+                {/* 🔐 ONLY SHOW IF OWNER */}
+                {user?.id === entry.user_id && (
+                  <div className="combo-actions">
+                    <button
+                      className="combo-btn-edit"
+                      onClick={() => {
+                        setEditingId(entry.id);
+                        setEditText(entry.combo);
+                      }}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="combo-btn-delete"
+                      onClick={() => handleDelete(entry.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ))}
       </div>
