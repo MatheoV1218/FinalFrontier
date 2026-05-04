@@ -140,13 +140,13 @@ export const characters: Character[] = [
   },
   {
     id: 9,
-    name: "Man of Steel",
-    title: "Impenetrable Pecs",
+    name: "Freddy",
+    title: "BadGuy",
     createdBy: "Jay",
     creatorRole: "Dev",
-    description: "High risk High reward rushdown mix with autoguard mechanics",
-    fightingStyle: "Parry",
-    difficulty: "Medium",
+    description: "High risk High reward special that does 75% damage if lands on neutral",
+    fightingStyle: "All-Rounder",
+    difficulty: "Hard",
     image: "/tiktok.png",
     communityCombos: [
       { username: "StarBoy", combo: "(Any Button) > 684H(Behemoth Typhoon)" },
