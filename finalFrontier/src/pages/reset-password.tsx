@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
   const navigate = useNavigate();
+  const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  const resetError = hashParams.get("error_code");
+
 
   const [mfaCode, setMfaCode] = useState("");
   const [mfaVerified, setMfaVerified] = useState(false);
@@ -13,6 +16,18 @@ function ResetPassword() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  if (resetError) {
+  return (
+    <section className="login-page">
+      <div className="login-card">
+        <h1>Reset Link Invalid</h1>
+        <p className="auth-message">
+          This password reset link is expired or already used. Please request a new one.
+        </p>
+      </div>
+    </section>
+  );
+}
 
   const verifyMFA = async () => {
     if (!mfaCode) {
